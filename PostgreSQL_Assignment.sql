@@ -10,11 +10,7 @@ INSERT INTO rangers (name, region) values
 ('Bob White', 'River Delta'),
 ('Carol King', 'Mountain Range')
 
-SELECT * from rangers
 
-SELECT * from species
-
-SELECT * from sightings
 
 CREATE Table species (
 species_id SERIAL PRIMARY KEY,
@@ -25,10 +21,10 @@ conservation_status VARCHAR(20)
 )
 
 INSERT INTO species (common_name,scientific_name,discovery_date,conservation_status) VALUES
-( 'Snow Leopard',     'Panthera uncia         ', '1775-01-01' ,'Endangered'),
-( 'Bengal Tiger',     'Panthera tigris tigris ', '1758-01-01' ,'Endangered' ),
-( 'Red Panda',        'Ailurus fulgens        ', '1825-01-01' ,'Vulnerable'     ),
-( 'Asiatic Elephant', 'Elephas maximus indicus', '1758-01-01' ,'Endangered'    )
+( 'Snow Leopard', 'Panthera uncia ', '1775-01-01' ,'Endangered'),
+( 'Bengal Tiger',  'Panthera tigris tigris ', '1758-01-01' ,'Endangered' ),
+( 'Red Panda', 'Ailurus fulgens', '1825-01-01' ,'Vulnerable' ),
+( 'Asiatic Elephant', 'Elephas maximus indicus', '1758-01-01' ,'Endangered' )
 
 CREATE Table sightings (
     sighting_id SERIAL PRIMARY KEY,
@@ -40,9 +36,22 @@ CREATE Table sightings (
 )
 
 INSERT INTO sightings (species_id,ranger_id,location,sighting_time,notes ) VALUES
-(1, 1, 'Peak Ridge',    '2024-05-10 07:45:00'  , 'Camera trap image captured'),
-(2, 2, 'Bankwood Area', '2024-05-12 16:20:00'  , 'Juvenile seen             '),
-(3, 3, 'Bamboo Grove East',  '2024-05-15 09:10:00'  , 'Feeding observed          '),
+(1, 1, 'Peak Ridge',  '2024-05-10 07:45:00', 'Camera trap image captured'),
+(2, 2, 'Bankwood Area', '2024-05-12 16:20:00', 'Juvenile seen '),
+(3, 3, 'Bamboo Grove East','2024-05-15 09:10:00', 'Feeding observed'),
 (1, 2, 'Snowfall Pass', '2024-05-18 18:30:00'  , NULL)
 
-DROP Table sightings
+-- problem 1:  Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
+INSERT INTO rangers (name, region) values
+('Derek Fox', 'Coastal Plains')
+
+-- problem 2 : Count unique species ever sighted.
+
+SELECT count(DISTINCT species_id) as unique_species_count
+FROM sightings;
+
+SELECT * from rangers
+
+SELECT * from species
+
+SELECT * from sightings
