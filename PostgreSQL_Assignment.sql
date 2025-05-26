@@ -55,3 +55,8 @@ SELECT * from rangers
 SELECT * from species
 
 SELECT * from sightings
+
+-- problem 3 : Find all sightings where the location includes "Pass".
+
+SELECT * FROM sightings
+WHERE location LIKE '%Pass%';
