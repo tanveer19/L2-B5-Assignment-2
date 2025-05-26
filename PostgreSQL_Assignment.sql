@@ -29,11 +29,12 @@ INSERT INTO species (common_name,scientific_name,discovery_date,conservation_sta
 CREATE Table sightings (
     sighting_id SERIAL PRIMARY KEY,
     species_id INTEGER REFERENCES species (species_id),
-     ranger_id INTEGER REFERENCES rangers (ranger_id),
+     ranger_id INTEGER REFERENCES rangers (ranger_id) on DELETE CASCADE,
      location VARCHAR(50) NOT NULL,
      sighting_time TIMESTAMP NOT NULL,
      notes VARCHAR(100)
 )
+
 
 INSERT INTO sightings (species_id,ranger_id,location,sighting_time,notes ) VALUES
 (1, 1, 'Peak Ridge',  '2024-05-10 07:45:00', 'Camera trap image captured'),
@@ -50,13 +51,9 @@ INSERT INTO rangers (name, region) values
 SELECT count(DISTINCT species_id) as unique_species_count
 FROM sightings;
 
-SELECT * from rangers
 
-SELECT * from species
 
-SELECT * from sightings
-
--- problem 3 : Find all sightings where the location includes "Pass".
+-- problem 3 : Find all sightings where the location includes 'Pass".
 
 SELECT * FROM sightings
 WHERE location LIKE '%Pass%';
@@ -84,3 +81,37 @@ ORDER BY si.sighting_time DESC
 LIMIT 2;
 
 -- problem 7 : Update all species discovered before year 1800 to have status 'Historic'.
+UPDATE species
+set conservation_status='Historic'
+WHERE discovery_date < '1800-01-01'
+
+-- problem 8: Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+
+SELECT sighting_id, 
+CASE 
+    WHEN (sighting_time::time) BETWEEN '00:00:01' AND '11:59:59'  THEN  'Morning'
+    WHEN (sighting_time::time) BETWEEN '12:00:00' AND '17:00:00'  THEN  'Afternoon'
+    else 'Evening'
+   
+END as time_of_day
+ from sightings
+
+--  problem 9:  Delete rangers who have never sighted any species
+
+DELETE FROM rangers 
+WHERE ranger_id NOT IN (
+SELECT DISTINCT ranger_id FROM sightings
+)
+    
+    
+SELECT * from rangers
+
+SELECT * from species
+
+SELECT * from sightings
+
+drop table rangers
+
+drop table species
+
+drop table sightings
