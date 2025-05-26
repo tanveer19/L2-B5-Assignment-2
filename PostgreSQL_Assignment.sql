@@ -60,3 +60,27 @@ SELECT * from sightings
 
 SELECT * FROM sightings
 WHERE location LIKE '%Pass%';
+
+-- problem 4:  List each ranger's name and their total number of sightings.
+SELECT r.name, count (s.sighting_id) as total_sightings
+FROM  rangers r
+LEFT JOIN  sightings s ON r.ranger_id = s.ranger_id
+GROUP BY r.ranger_id, r.name
+ORDER BY r.name
+
+-- problem 5: List species that have never been sighted.
+SELECT s.common_name
+FROM species s
+LEFT JOIN sightings si ON s.species_id = si.species_id
+WHERE si.species_id IS NULL
+
+-- problem 6: Show the most recent 2 sightings.
+
+SELECT sp.common_name , si.sighting_time, r.name
+FROM sightings si
+JOIN species sp ON si.species_id = sp.species_id
+JOIN rangers r ON si.ranger_id = r.ranger_id
+ORDER BY si.sighting_time DESC
+LIMIT 2;
+
+-- problem 7 : Update all species discovered before year 1800 to have status 'Historic'.
