@@ -11,7 +11,6 @@ INSERT INTO rangers (name, region) values
 ('Carol King', 'Mountain Range')
 
 
-
 CREATE Table species (
 species_id SERIAL PRIMARY KEY,
 common_name VARCHAR(50) NOT NULL,
@@ -35,12 +34,12 @@ CREATE Table sightings (
      notes VARCHAR(100)
 )
 
-
 INSERT INTO sightings (species_id,ranger_id,location,sighting_time,notes ) VALUES
 (1, 1, 'Peak Ridge',  '2024-05-10 07:45:00', 'Camera trap image captured'),
 (2, 2, 'Bankwood Area', '2024-05-12 16:20:00', 'Juvenile seen '),
 (3, 3, 'Bamboo Grove East','2024-05-15 09:10:00', 'Feeding observed'),
 (1, 2, 'Snowfall Pass', '2024-05-18 18:30:00'  , NULL)
+
 
 -- problem 1:  Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
 INSERT INTO rangers (name, region) values
@@ -51,14 +50,13 @@ INSERT INTO rangers (name, region) values
 SELECT count(DISTINCT species_id) as unique_species_count
 FROM sightings;
 
-
-
 -- problem 3 : Find all sightings where the location includes 'Pass".
 
 SELECT * FROM sightings
 WHERE location LIKE '%Pass%';
 
 -- problem 4:  List each ranger's name and their total number of sightings.
+
 SELECT r.name, count (s.sighting_id) as total_sightings
 FROM  rangers r
 LEFT JOIN  sightings s ON r.ranger_id = s.ranger_id
@@ -66,6 +64,7 @@ GROUP BY r.ranger_id, r.name
 ORDER BY r.name
 
 -- problem 5: List species that have never been sighted.
+
 SELECT s.common_name
 FROM species s
 LEFT JOIN sightings si ON s.species_id = si.species_id
@@ -81,6 +80,7 @@ ORDER BY si.sighting_time DESC
 LIMIT 2;
 
 -- problem 7 : Update all species discovered before year 1800 to have status 'Historic'.
+
 UPDATE species
 set conservation_status='Historic'
 WHERE discovery_date < '1800-01-01'
@@ -103,15 +103,3 @@ WHERE ranger_id NOT IN (
 SELECT DISTINCT ranger_id FROM sightings
 )
     
-    
-SELECT * from rangers
-
-SELECT * from species
-
-SELECT * from sightings
-
-drop table rangers
-
-drop table species
-
-drop table sightings
